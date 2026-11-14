@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en" data-theme="fun">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>KidsStudio — ABC, Numbers &amp; Doodle Fun</title>
+<meta name="description" content="Local-first kids educational workshop and doodle canvas. Part of the Crisp Suite.">
+<meta name="theme-color" content="#1e1b4b" id="metaThemeColor">
+<script src="https://cdn.tailwindcss.com"></script> 
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;700;800&display=swap" rel="stylesheet" />
+<style>
+/* Playful Night/Stars Theme (Default) */
+:root,
+:root[data-theme="fun"] {
+  color-scheme: dark;
+  --bg: #0f172a;
+  --card: #1e293b;
+  --ink: #f8fafc;
+  --mute: #94a3b8;
+  --accent: #f43f5e; /* Playful vibrant pink/red */
+  --accent-ink: #ffffff;
+  --warn: #fbbf24;
+  --bad: #f87171;
+  --line: #334155;
+  --field: #111827;
+  --btn-bg: #273548;
+  --btn-hover: #33445f;
+  --btn-line: #475569;
+}
+
+/* Bright Sunny Day Theme */
+:root[data-theme="day"] {
+  color-scheme: light;
+  --bg: #eff6ff;
+  --card: #ffffff;
+  --ink: #1e293b;
+  --mute: #64748b;
+  --accent: #2563eb; /* Bright royal blue */
+  --accent-ink: #ffffff;
+  --warn: #d97706;
+  --bad: #dc2626;
+  --line: #cbd5e1;
+  --field: #f8fafc;
+  --btn-bg: #ffffff;
+  --btn-hover: #f1f5f9;
+  --btn-line: #94a3b8;
+}
+
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font: 18px/1.6 'Plus Jakarta Sans', system-ui, sans-serif;
+  padding: 16px 12px 32px;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+button, input { font: inherit; color: inherit; }
+
+button {
+  cursor: pointer;
+  border: 2px solid var(--btn-line);
+  background: var(--btn-bg);
+  color: var(--ink);
+  border-radius: 14px;
+  padding: 12px 18px;
+  min-height: 50px;
+  font-weight: 700;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+  transition: all 0.15s ease;
+}
+button:hover:not(:disabled) {
+  background: var(--btn-hover);
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+button.primary {
+  background: var(--accent);
+  color: var(--accent-ink);
+  border-color: transparent;
+  font-weight: 800;
+}
+button.primary:hover:not(:disabled) { filter: brightness(1.1); }
+button.danger {
+  background: rgba(248, 113, 113, 0.15);
+  color: var(--bad);
+  border-color: rgba(248, 113, 113, 0.6);
+}
+
+input {
+  width: 100%;
+  background: var(--field);
+  border: 2px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 16px;
+  color: var(--ink);
+  font-size: 1rem;
+  outline: none;
+}
+input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(244, 63, 94, 0.2);
+}
+
+label { display: block; font-size: 15px; color: var(--mute); margin-bottom: 6px; font-weight: 700; }
+
+header.top {
+  max-width: 900px;
+  margin: 0 auto 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: var(--card);
+  border: 2px solid var(--line);
+  border-radius: 18px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+}
+.brand { font-weight: 800; color: var(--accent); font-size: 1.4rem; letter-spacing: -0.02em; }
+.tabs { display: flex; gap: 8px; flex-wrap: wrap; }
+.tabs button { padding: 10px 16px; min-height: 44px; font-size: 15px; }
+.tabs button.on { background: var(--accent); color: var(--accent-ink); border-color: transparent; font-weight: 800; }
+
+main { max-width: 900px; margin: 0 auto; }
+.card { background: var(--card); border: 2px solid var(--line); border-radius: 18px; padding: 24px; margin-bottom: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); }
+.grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.hint { color: var(--mute); font-size: 15px; margin: 6px 0; }
+
+@media(max-width: 768px) {
+  .grid4 { grid-template-columns: repeat(2, 1fr); }
+  header.top { flex-direction: column; align-items: stretch; }
+  .tabs { justify-content: stretch; }
+  .tabs button { flex: 1; }
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div>
+    <span class="brand">🎨 KidsStudio</span>
+    <p class="hint" style="margin:0;">Crisp Suite / HandleVault Learning Utility</p>
+  </div>
+  <nav class="tabs" aria-label="Sections">
+    <button data-tab="abc" class="on">ABC &amp; 123</button>
+    <button data-tab="doodle">Doodle Pad</button>
+    <button data-tab="routine">Routines</button>
+  </nav>
+  <div class="row">
+    <button id="btnThemeToggle" type="button" style="padding:8px 14px;min-height:40px;font-size:14px;">☀️ Day Theme</button>
+  </div>
+</header>
+
+<main>
+  <!-- TAB 1: ABC & 123 FLASHCARDS -->
+  <section id="tab-abc">
+    <div class="card" style="text-align: center;">
+      <h2 style="margin-top:0; font-size:1.4rem; color:var(--accent);">Alphabet &amp; Numbers Practice</h2>
+      <p class="hint">Tap any letter or number to see its pronunciation &amp; example!</p>
+      
+      <div id="cardDisplay" style="background: var(--field); border: 3px dashed var(--accent); border-radius: 20px; padding: 40px; margin: 20px 0;">
+        <div id="cardSymbol" style="font-size: 5rem; font-weight: 800; color: var(--accent);">A</div>
+        <div id="cardWord" style="font-size: 1.5rem; font-weight: 700; margin-top: 10px;">Apple 🍎</div>
+      </div>
+
+      <div style="margin-top: 20px;">
+        <h3 style="font-size: 1rem; color: var(--mute); margin-bottom: 10px;">Pick a Letter:</h3>
+        <div class="grid4" id="abcGrid"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 2: DOODLE CANVAS -->
+  <section id="tab-doodle" hidden>
+    <div class="card">
+      <h2 style="margin-top:0; font-size:1.4rem; color:var(--accent);">Magical Doodle Canvas</h2>
+      <p class="hint">Draw anything you like! Use your mouse or finger.</p>
+      
+      <div style="position: relative; margin: 16px 0; border: 3px solid var(--line); border-radius: 14px; overflow: hidden; background: #ffffff;">
+        <canvas id="doodleCanvas" width="800" height="400" style="width: 100%; height: 350px; display: block; cursor: crosshair;"></canvas>
+      </div>
+
+      <div class="row" style="justify-content: space-between;">
+        <div class="row">
+          <button onclick="window.setPenColor('#f43f5e')" style="background: #f43f5e; color:#fff; width:40px; height:40px; border-radius:50%; border:none;"></button>
+          <button onclick="window.setPenColor('#2563eb')" style="background: #2563eb; color:#fff; width:40px; height:40px; border-radius:50%; border:none;"></button>
+          <button onclick="window.setPenColor('#16a34a')" style="background: #16a34a; color:#fff; width:40px; height:40px; border-radius:50%; border:none;"></button>
+          <button onclick="window.setPenColor('#d97706')" style="background: #d97706; color:#fff; width:40px; height:40px; border-radius:50%; border:none;"></button>
+          <button onclick="window.setPenColor('#0f172a')" style="background: #0f172a; color:#fff; width:40px; height:40px; border-radius:50%; border:none;"></button>
+        </div>
+        <button id="btnClearCanvas" class="danger">Clear Canvas</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- TAB 3: ROUTINE CHECKLIST -->
+  <section id="tab-routine" hidden>
+    <div class="card">
+      <h2 style="margin-top:0; font-size:1.4rem; color:var(--accent);">Daily Fun Routines &amp; Stars</h2>
+      <div class="row" style="margin-bottom: 16px;">
+        <input id="routineInput" type="text" placeholder="Add fun goal (e.g., Brush teeth, Clean toys)..." style="flex: 1;">
+        <button id="btnAddRoutine" class="primary">Add Goal</button>
+      </div>
+      <div id="routineList" style="display: flex; flex-direction: column; gap: 10px;">
+        <!-- Dynamic routines -->
+      </div>
+    </div>
+  </section>
+</main>
+
+<script>
+(() => {
+  const THEME_KEY = 'kidsstudio_theme';
+  const btnTheme = document.getElementById('btnThemeToggle');
+  const metaTheme = document.getElementById('metaThemeColor');
+
+  function applyTheme(theme) {
+    const isDay = theme === 'day';
+    document.documentElement.setAttribute('data-theme', isDay ? 'day' : 'fun');
+    if (btnTheme) btnTheme.textContent = isDay ? '🌙 Night Stars' : '☀️ Day Theme';
+    if (metaTheme) metaTheme.setAttribute('content', isDay ? '#eff6ff' : '#1e1b4b');
+    localStorage.setItem(THEME_KEY, isDay ? 'day' : 'fun');
+  }
+
+  applyTheme(localStorage.getItem(THEME_KEY) || 'fun');
+  btnTheme.addEventListener('click', () => {
+    const current = document.documentElement.getAttribute('data-theme');
+    applyTheme(current === 'day' ? 'fun' : 'day');
+  });
+
+  const tabs = document.querySelectorAll('.tabs button');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('on'));
+      tab.classList.add('on');
+      const target = tab.dataset.tab;
+      document.querySelectorAll('main > section').forEach(sec => {
+        sec.hidden = sec.id !== `tab-${target}`;
+      });
+    });
+  });
+
+  // ABC Flashcards Logic
+  const items = [
+    { s: 'A', w: 'Apple 🍎' }, { s: 'B', w: 'Ball ⚽' }, { s: 'C', w: 'Cat 🐱' }, { s: 'D', w: 'Dog 🐶' },
+    { s: 'E', w: 'Elephant 🐘' }, { s: 'F', w: 'Fish 🐟' }, { s: 'G', w: 'Giraffe 🦒' }, { s: 'H', w: 'House 🏠' },
+    { s: '1', w: 'One Star ⭐' }, { s: '2', w: 'Two Cats 🐈🐈' }, { s: '3', w: 'Three Blocks 🧊' }, { s: '4', w: 'Four Flowers 🌸' }
+  ];
+
+  const cardSymbol = document.getElementById('cardSymbol');
+  const cardWord = document.getElementById('cardWord');
+  const abcGrid = document.getElementById('abcGrid');
+
+  items.forEach(item => {
+    const btn = document.createElement('button');
+    btn.textContent = item.s;
+    btn.style.fontSize = '1.3rem';
+    btn.style.padding = '12px';
+    btn.addEventListener('click', () => {
+      cardSymbol.textContent = item.s;
+      cardWord.textContent = item.w;
+    });
+    abcGrid.appendChild(btn);
+  });
+
+  // Doodle Canvas Logic
+  const canvas = document.getElementById('doodleCanvas');
+  const ctx = canvas.getContext('2d');
+  let drawing = false;
+  let penColor = '#f43f5e';
+
+  window.setPenColor = (col) => { penColor = col; };
+
+  function startDraw(e) {
+    drawing = true;
+    ctx.beginPath();
+    const rect = canvas.getBoundingClientRect();
+    ctx.moveTo((e.clientX || e.touches[0].clientX) - rect.left, (e.clientY || e.touches[0].clientY) - rect.top);
+  }
+
+  function draw(e) {
+    if (!drawing) return;
+    const rect = canvas.getBoundingClientRect();
+    ctx.lineWidth = 6;
+    ctx.lineCap = 'round';
+    ctx.strokeStyle = penColor;
+    ctx.lineTo((e.clientX || e.touches[0].clientX) - rect.left, (e.clientY || e.touches[0].clientY) - rect.top);
+    ctx.stroke();
+  }
+
+  function stopDraw() { drawing = false; }
+
+  canvas.addEventListener('mousedown', startDraw);
+  canvas.addEventListener('mousemove', draw);
+  canvas.addEventListener('mouseup', stopDraw);
+  canvas.addEventListener('touchstart', startDraw);
+  canvas.addEventListener('touchmove', draw);
+  canvas.addEventListener('touchend', stopDraw);
+
+  document.getElementById('btnClearCanvas').addEventListener('click', () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  });
+
+  // Routine Checklist Logic
+  const routineInput = document.getElementById('routineInput');
+  const btnAddRoutine = document.getElementById('btnAddRoutine');
+  const routineList = document.getElementById('routineList');
+  let routines = JSON.parse(localStorage.getItem('kids_routines') || '[{"text": "Brush teeth 🪥", "done": false}, {"text": "Eat healthy veggies 🥦", "done": true}]');
+
+  function renderRoutines() {
+    routineList.innerHTML = '';
+    routines.forEach((r, idx) => {
+      const div = document.createElement('div');
+      div.className = 'row';
+      div.style.justify = 'space-between';
+      div.style.background = 'var(--field)';
+      div.style.padding = '14px 18px';
+      div.style.borderRadius = '14px';
+      div.style.border = '2px solid var(--line)';
+      
+      div.innerHTML = `
+        <span style="font-size: 1.1rem; font-weight: 700; ${r.done ? 'text-decoration: line-through; opacity: 0.6;' : ''}">${r.text}</span>
+        <div class="row">
+          <button class="${r.done ? '' : 'primary'}" style="padding: 8px 14px; min-height: 40px;" onclick="window.toggleRoutine(${idx})">${r.done ? 'Done ⭐' : 'Complete'}</button>
+          <button class="danger" style="padding: 8px 12px; min-height: 40px;" onclick="window.deleteRoutine(${idx})">✕</button>
+        </div>
+      `;
+      routineList.appendChild(div);
+    });
+  }
+
+  window.toggleRoutine = (idx) => {
+    routines[idx].done = !routines[idx].done;
+    localStorage.setItem('kids_routines', JSON.stringify(routines));
+    renderRoutines();
+  };
+
+  window.deleteRoutine = (idx) => {
+    routines.splice(idx, 1);
+    localStorage.setItem('kids_routines', JSON.stringify(routines));
+    renderRoutines();
+  };
+
+  btnAddRoutine.addEventListener('click', () => {
+    const text = routineInput.value.trim();
+    if (text) {
+      routines.push({ text, done: false });
+      localStorage.setItem('kids_routines', JSON.stringify(routines));
+      routineInput.value = '';
+      renderRoutines();
+    }
+  });
+
+  renderRoutines();
+})();
+</script>
+<script src="repo.js"></script>
+</body>
+</html>
