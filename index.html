@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>KidsStudio — ABC, Numbers &amp; Doodle Fun</title>
+<title>KidsStudio — ABC (A-H), Numbers &amp; Doodle Fun</title>
 <meta name="description" content="Local-first kids educational workshop and doodle canvas. Part of the Crisp Suite.">
 <meta name="theme-color" content="#1e1b4b" id="metaThemeColor">
 <script src="https://cdn.tailwindcss.com"></script> 
@@ -127,12 +127,14 @@ header.top {
 
 main { max-width: 900px; margin: 0 auto; }
 .card { background: var(--card); border: 2px solid var(--line); border-radius: 18px; padding: 24px; margin-bottom: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.15); }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .grid4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
 .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
 .hint { color: var(--mute); font-size: 15px; margin: 6px 0; }
 
 @media(max-width: 768px) {
   .grid4 { grid-template-columns: repeat(2, 1fr); }
+  .grid2 { grid-template-columns: 1fr; }
   header.top { flex-direction: column; align-items: stretch; }
   .tabs { justify-content: stretch; }
   .tabs button { flex: 1; }
@@ -147,7 +149,7 @@ main { max-width: 900px; margin: 0 auto; }
     <p class="hint" style="margin:0;">Crisp Suite / HandleVault Learning Utility</p>
   </div>
   <nav class="tabs" aria-label="Sections">
-    <button data-tab="abc" class="on">ABC &amp; 123</button>
+    <button data-tab="abc" class="on">ABC (A-H) &amp; 123</button>
     <button data-tab="doodle">Doodle Pad</button>
     <button data-tab="routine">Routines</button>
   </nav>
@@ -157,19 +159,39 @@ main { max-width: 900px; margin: 0 auto; }
 </header>
 
 <main>
-  <!-- TAB 1: ABC & 123 FLASHCARDS -->
+  <!-- TAB 1: ABC (A-H) & 123 FLASHCARDS + RANDOM + ADD -->
   <section id="tab-abc">
     <div class="card" style="text-align: center;">
-      <h2 style="margin-top:0; font-size:1.4rem; color:var(--accent);">Alphabet &amp; Numbers Practice</h2>
-      <p class="hint">Tap any letter or number to see its pronunciation &amp; example!</p>
+      <h2 style="margin-top:0; font-size:1.4rem; color:var(--accent);">Alphabet (A-H) &amp; Numbers Practice</h2>
+      <p class="hint">Tap a flashcard below, pick a random one, or add your own custom letters &amp; numbers!</p>
       
       <div id="cardDisplay" style="background: var(--field); border: 3px dashed var(--accent); border-radius: 20px; padding: 40px; margin: 20px 0;">
         <div id="cardSymbol" style="font-size: 5rem; font-weight: 800; color: var(--accent);">A</div>
         <div id="cardWord" style="font-size: 1.5rem; font-weight: 700; margin-top: 10px;">Apple 🍎</div>
       </div>
 
-      <div style="margin-top: 20px;">
-        <h3 style="font-size: 1rem; color: var(--mute); margin-bottom: 10px;">Pick a Letter:</h3>
+      <div class="row" style="justify-content: center; margin-bottom: 20px;">
+        <button id="btnRandomCard" class="primary" style="padding: 10px 24px;">🎲 Pick Random Card</button>
+      </div>
+
+      <!-- Add Custom Letter / Number Form -->
+      <div style="background: var(--field); padding: 18px; border-radius: 14px; border: 2px solid var(--line); margin-bottom: 20px; text-align: left;">
+        <h3 style="font-size: 1.1rem; color: var(--accent); margin-top: 0; margin-bottom: 10px;">➕ Add Custom Letter or Number</h3>
+        <div class="grid2" style="gap: 12px; margin-bottom: 12px;">
+          <div>
+            <label for="newSymbol">Symbol (e.g., I or 5)</label>
+            <input id="newSymbol" type="text" maxlength="3" placeholder="I">
+          </div>
+          <div>
+            <label for="newWord">Word &amp; Emoji (e.g., Iguana 🦎)</label>
+            <input id="newWord" type="text" placeholder="Iguana 🦎">
+          </div>
+        </div>
+        <button id="btnAddCard" class="primary" style="width: 100%;">Add to Flashcard Deck</button>
+      </div>
+
+      <div>
+        <h3 style="font-size: 1rem; color: var(--mute); margin-bottom: 10px;">Flashcard Deck:</h3>
         <div class="grid4" id="abcGrid"></div>
       </div>
     </div>
@@ -245,28 +267,53 @@ main { max-width: 900px; margin: 0 auto; }
     });
   });
 
-  // ABC Flashcards Logic
-  const items = [
+  // ABC (A-H) & Numbers Flashcards Logic with LocalStorage & Add support
+  let flashcards = JSON.parse(localStorage.getItem('kids_flashcards') || JSON.stringify([
     { s: 'A', w: 'Apple 🍎' }, { s: 'B', w: 'Ball ⚽' }, { s: 'C', w: 'Cat 🐱' }, { s: 'D', w: 'Dog 🐶' },
     { s: 'E', w: 'Elephant 🐘' }, { s: 'F', w: 'Fish 🐟' }, { s: 'G', w: 'Giraffe 🦒' }, { s: 'H', w: 'House 🏠' },
     { s: '1', w: 'One Star ⭐' }, { s: '2', w: 'Two Cats 🐈🐈' }, { s: '3', w: 'Three Blocks 🧊' }, { s: '4', w: 'Four Flowers 🌸' }
-  ];
+  ]));
 
   const cardSymbol = document.getElementById('cardSymbol');
   const cardWord = document.getElementById('cardWord');
   const abcGrid = document.getElementById('abcGrid');
 
-  items.forEach(item => {
-    const btn = document.createElement('button');
-    btn.textContent = item.s;
-    btn.style.fontSize = '1.3rem';
-    btn.style.padding = '12px';
-    btn.addEventListener('click', () => {
-      cardSymbol.textContent = item.s;
-      cardWord.textContent = item.w;
+  function renderFlashcards() {
+    abcGrid.innerHTML = '';
+    flashcards.forEach((item, idx) => {
+      const btn = document.createElement('button');
+      btn.textContent = item.s;
+      btn.style.fontSize = '1.3rem';
+      btn.style.padding = '12px';
+      btn.addEventListener('click', () => {
+        cardSymbol.textContent = item.s;
+        cardWord.textContent = item.w;
+      });
+      abcGrid.appendChild(btn);
     });
-    abcGrid.appendChild(btn);
+  }
+
+  document.getElementById('btnRandomCard').addEventListener('click', () => {
+    if (flashcards.length === 0) return;
+    const randomIndex = Math.floor(Math.random() * flashcards.length);
+    const item = flashcards[randomIndex];
+    cardSymbol.textContent = item.s;
+    cardWord.textContent = item.w;
   });
+
+  document.getElementById('btnAddCard').addEventListener('click', () => {
+    const sym = document.getElementById('newSymbol').value.trim();
+    const wrd = document.getElementById('newWord').value.trim();
+    if (sym && wrd) {
+      flashcards.push({ s: sym, w: wrd });
+      localStorage.setItem('kids_flashcards', JSON.stringify(flashcards));
+      document.getElementById('newSymbol').value = '';
+      document.getElementById('newWord').value = '';
+      renderFlashcards();
+    }
+  });
+
+  renderFlashcards();
 
   // Doodle Canvas Logic
   const canvas = document.getElementById('doodleCanvas');
